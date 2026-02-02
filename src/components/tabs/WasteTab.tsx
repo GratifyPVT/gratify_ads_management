@@ -37,24 +37,25 @@ const WasteTab = () => {
     fetchWaste();
   }, []);
 
-  const updateCategory = async (wasteId: string, category: "biodegradable" | "recyclable" | "miscellaneous") => {
+  const deleteWaste = async (wasteId: string, publicId: string) => {
+    const confirmed = window.confirm("Are you sure you want to delete this waste entry? This will also remove the image from storage.");
+    if (!confirmed) return;
+
     setUpdating(wasteId);
     try {
       const res = await fetch(`/api/waste/${wasteId}`, {
-        method: "PATCH",
+        method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ category }),
+        body: JSON.stringify({ publicId }),
       });
       const data = await res.json();
       if (data.success) {
-        setWasteEntries((prev) =>
-          prev.map((waste) =>
-            waste._id === wasteId ? { ...waste, category } : waste
-          )
-        );
+        setWasteEntries((prev) => prev.filter((waste) => waste._id !== wasteId));
+      } else {
+        alert(`Delete failed: ${data.error}`);
       }
     } catch {
-      // ignore
+      alert("Failed to delete waste entry");
     } finally {
       setUpdating(null);
     }
@@ -72,6 +73,10 @@ const WasteTab = () => {
         return "bg-gray-500/20 text-gray-400 border-gray-500/30";
     }
   };
+
+    function updateCategory(_id: string, arg1: string): void {
+        throw new Error("Function not implemented.");
+    }
 
   return (
     <div className="space-y-6">
@@ -129,18 +134,21 @@ const WasteTab = () => {
               <th className="text-left px-5 py-3 text-xs font-medium text-[#8B949E] uppercase tracking-wider">
                 Date
               </th>
+              <th className="text-right px-5 py-3 text-xs font-medium text-[#8B949E] uppercase tracking-wider">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={5} className="px-5 py-8 text-center text-[#8B949E]">
+                <td colSpan={6} className="px-5 py-8 text-center text-[#8B949E]">
                   Loading waste entries...
                 </td>
               </tr>
             ) : wasteEntries.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-5 py-8 text-center text-[#8B949E]">
+                <td colSpan={6} className="px-5 py-8 text-center text-[#8B949E]">
                   <div className="flex flex-col items-center gap-2">
                     <svg className="w-12 h-12 text-[#2D3748]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -194,6 +202,15 @@ const WasteTab = () => {
                     <p className="text-[#8B949E] text-sm">
                       {new Date(waste.disposedAt).toLocaleDateString()}
                     </p>
+                  </td>
+                  <td className="px-5 py-4 text-right">
+                    <button
+                      onClick={() => deleteWaste(waste._id, waste.publicId)}
+                      disabled={updating === waste._id}
+                      className="px-3 py-1.5 text-xs border border-[#f85149] text-[#f85149] rounded hover:bg-[#f85149]/10 transition-colors disabled:opacity-50"
+                    >
+                      {updating === waste._id ? "Deleting..." : "Delete"}
+                    </button>
                   </td>
                 </tr>
               ))

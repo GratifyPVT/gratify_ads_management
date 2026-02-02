@@ -145,6 +145,18 @@ is blocked by the browser.`,
   }
 }`,
     },
+    {
+      id: "delete-waste",
+      method: "DELETE",
+      path: "/api/waste/{wasteId}",
+      description: "Delete a waste entry and its associated image from storage.",
+      example: `curl -X DELETE "${baseUrl}/api/waste/WASTE_ID" \\
+  -H "Content-Type: application/json" \\
+  -d '{"publicId": "cloudinary_public_id"}'`,
+      response: `{
+  "success": true
+}`,
+    },
   ];
 
   return (
