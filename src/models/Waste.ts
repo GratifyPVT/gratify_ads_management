@@ -7,6 +7,7 @@ export interface IWaste extends Document {
   binlocation: string;
   disposedAt: Date;
   editedtype?: string;
+  category?: "biodegradable" | "recyclable" | "miscellaneous";
 }
 
 const WasteSchema:Schema<IWaste> = new Schema({
@@ -32,6 +33,10 @@ const WasteSchema:Schema<IWaste> = new Schema({
     },
     editedtype: {
     type: String,
+    },
+    category: {
+    type: String,
+    enum: ["biodegradable", "recyclable", "miscellaneous"],
     },
 
 })

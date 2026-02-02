@@ -30,6 +30,18 @@ export async function POST(req: NextRequest) {
           binlocation: string;
         };
         const editedtype= type.toLowerCase();
+        
+        // Auto-categorize waste based on type
+        let category: "biodegradable" | "recyclable" | "miscellaneous" = "miscellaneous";
+        const biodegradableTypes = ["food", "paper", "organic", "vegetable", "fruit", "plant"];
+        const recyclableTypes = ["plastic", "metal", "glass", "cardboard", "can", "bottle"];
+        
+        if (biodegradableTypes.some(t => editedtype.includes(t))) {
+            category = "biodegradable";
+        } else if (recyclableTypes.some(t => editedtype.includes(t))) {
+            category = "recyclable";
+        }
+        
         if (!file){
             return NextResponse.json({error: 'No file provided'}, {status: 400});
         }
@@ -49,7 +61,8 @@ export async function POST(req: NextRequest) {
             publicId: result.public_id,
             type,
             editedtype,
-            binlocation
+            binlocation,
+            category
 
         })
         await waste.save();

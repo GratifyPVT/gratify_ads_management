@@ -87,6 +87,64 @@ video downloads for all assigned videos.
 Displays download links if auto-download
 is blocked by the browser.`,
     },
+    {
+      id: "upload-waste",
+      method: "POST",
+      path: "/api/uploadwaste",
+      description: "Upload waste image and classification data from smart bins.",
+      example: `curl -X POST "${baseUrl}/api/uploadwaste" \\
+  -F "image=@/path/to/waste.jpg" \\
+  -F "type=plastic" \\
+  -F "binlocation=Building A - Floor 1"`,
+      response: `{
+  "success": true,
+  "waste": {
+    "_id": "waste_id",
+    "type": "plastic",
+    "editedtype": "plastic",
+    "binlocation": "Building A - Floor 1",
+    "category": "recyclable",
+    "imageUrl": "https://cloudinary.com/...",
+    "disposedAt": "2026-02-02T..."
+  }
+}`,
+    },
+    {
+      id: "get-waste",
+      method: "GET",
+      path: "/api/waste",
+      description: "Retrieve all waste entries with categorization data.",
+      example: `curl "${baseUrl}/api/waste"`,
+      response: `{
+  "success": true,
+  "waste": [
+    {
+      "_id": "waste_id",
+      "type": "plastic",
+      "category": "recyclable",
+      "binlocation": "Building A",
+      "imageUrl": "https://cloudinary.com/...",
+      "disposedAt": "2026-02-02T..."
+    }
+  ]
+}`,
+    },
+    {
+      id: "update-waste-category",
+      method: "PATCH",
+      path: "/api/waste/{wasteId}",
+      description: "Update the category of a waste entry.",
+      example: `curl -X PATCH "${baseUrl}/api/waste/WASTE_ID" \\
+  -H "Content-Type: application/json" \\
+  -d '{"category": "biodegradable"}'`,
+      response: `{
+  "success": true,
+  "waste": {
+    "_id": "waste_id",
+    "category": "biodegradable"
+  }
+}`,
+    },
   ];
 
   return (

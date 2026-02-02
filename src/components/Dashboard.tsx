@@ -6,6 +6,7 @@ import OverviewTab from "./tabs/OverviewTab";
 import BinsTab from "./tabs/BinsTab";
 import VideosTab from "./tabs/VideosTab";
 import UploadTab from "./tabs/UploadTab";
+import WasteTab from "./tabs/WasteTab";
 import ApiTab from "./tabs/ApiTab";
 
 const Dashboard = () => {
@@ -21,6 +22,8 @@ const Dashboard = () => {
         return <VideosTab />;
       case "upload":
         return <UploadTab />;
+      case "waste":
+        return <WasteTab />;
       case "api":
         return <ApiTab />;
       default:
@@ -37,13 +40,20 @@ const Dashboard = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <h1 className="text-lg font-semibold text-white capitalize">
-                {activeTab === "api" ? "API Access" : activeTab}
+                {activeTab === "api" ? "API Access" : activeTab === "waste" ? "Waste Management" : activeTab}
               </h1>
             </div>
             <div className="flex items-center gap-3">
-              <button className="px-3 py-1.5 text-xs bg-[#00ED64] text-[#0D1117] rounded font-medium hover:bg-[#00D455] transition-colors">
-                + New Bin
-              </button>
+              {activeTab === "bins" && (
+                <button className="px-3 py-1.5 text-xs bg-[#00ED64] text-[#0D1117] rounded font-medium hover:bg-[#00D455] transition-colors">
+                  + New Bin
+                </button>
+              )}
+              {activeTab === "waste" && (
+                <button className="px-3 py-1.5 text-xs bg-[#00ED64] text-[#0D1117] rounded font-medium hover:bg-[#00D455] transition-colors">
+                  + Upload Waste
+                </button>
+              )}
             </div>
           </div>
         </header>
