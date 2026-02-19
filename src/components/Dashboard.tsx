@@ -41,35 +41,52 @@ const Dashboard = () => {
     }
   };
 
+  // Mobile sidebar toggle
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <div className="flex h-screen bg-[#0D1117]">
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-      <main className="flex-1 overflow-auto">
+      {/* Mobile sidebar overlay */}
+      <div className={`fixed inset-0 z-40 bg-black bg-opacity-40 transition-opacity md:hidden ${sidebarOpen ? 'block' : 'hidden'}`} onClick={() => setSidebarOpen(false)} />
+      {/* Sidebar */}
+      <div className={`fixed z-50 md:static md:translate-x-0 top-0 left-0 h-full transition-transform duration-200 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:flex`} style={{width: '224px'}}>
+        <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+      </div>
+      {/* Main content */}
+      <main className="flex-1 overflow-auto min-w-0">
         {/* Top Header */}
-        <header className="bg-[#161B22] border-b border-[#2D3748] px-6 py-3 sticky top-0 z-10">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <h1 className="text-lg font-semibold text-white capitalize">
-                {activeTab === "api" ? "API Access" : activeTab === "waste" ? "Waste Management" : activeTab}
-              </h1>
-            </div>
-            <div className="flex items-center gap-3">
-              {activeTab === "bins" && (
-                <button className="px-3 py-1.5 text-xs bg-[#00ED64] text-[#0D1117] rounded font-medium hover:bg-[#00D455] transition-colors">
-                  + New Bin
-                </button>
-              )}
-              {activeTab === "waste" && (
-                <button className="px-3 py-1.5 text-xs bg-[#00ED64] text-[#0D1117] rounded font-medium hover:bg-[#00D455] transition-colors">
-                  + Upload Waste
-                </button>
-              )}
-            </div>
+        <header className="bg-[#161B22] border-b border-[#2D3748] px-4 md:px-6 py-3 sticky top-0 z-30 flex items-center justify-between">
+          {/* Mobile menu button */}
+          <button
+            className="md:hidden mr-2 text-[#00ED64] focus:outline-none"
+            aria-label="Open sidebar"
+            onClick={() => setSidebarOpen(true)}
+          >
+            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+          <div className="flex items-center gap-4 flex-1 min-w-0">
+            <h1 className="text-lg font-semibold text-white capitalize truncate">
+              {activeTab === "api" ? "API Access" : activeTab === "waste" ? "Waste Management" : activeTab}
+            </h1>
+          </div>
+          <div className="flex items-center gap-3">
+            {activeTab === "bins" && (
+              <button className="px-3 py-1.5 text-xs bg-[#00ED64] text-[#0D1117] rounded font-medium hover:bg-[#00D455] transition-colors">
+                + New Bin
+              </button>
+            )}
+            {activeTab === "waste" && (
+              <button className="px-3 py-1.5 text-xs bg-[#00ED64] text-[#0D1117] rounded font-medium hover:bg-[#00D455] transition-colors">
+                + Upload Waste
+              </button>
+            )}
           </div>
         </header>
 
         {/* Content */}
-        <div className="p-6">{renderContent()}</div>
+        <div className="p-2 sm:p-4 md:p-6 max-w-full">{renderContent()}</div>
       </main>
     </div>
   );
