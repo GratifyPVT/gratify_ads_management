@@ -109,7 +109,7 @@ const steps = [
 const categories = [
   { label: "🌱 Biodegradable", className: "bg-green-100 text-green-800" },
   { label: "♻️ Recyclable", className: "bg-blue-100 text-blue-800" },
-  { label: "🗑️ Miscellaneous", className: "bg-yellow-100 text-yellow-800" },
+  { label: "🗑️ Miscellaneous (when the model cannot recognize the type)", className: "bg-yellow-100 text-yellow-800" },
 ];
 
 export default function WastePredictorGuide() {
@@ -205,6 +205,7 @@ export default function WastePredictorGuide() {
               </span>
             ))}
           </div>
+          <p className="text-xs text-yellow-700 mt-4">The <strong>miscellaneous</strong> category is used when the model cannot confidently recognize or categorize the waste type.</p>
         </div>
 
         {/* Footer */}
