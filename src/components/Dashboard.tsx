@@ -1,13 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Sidebar from "./Sidebar";
 import OverviewTab from "./tabs/OverviewTab";
 import BinsTab from "./tabs/BinsTab";
 import VideosTab from "./tabs/VideosTab";
 import UploadTab from "./tabs/UploadTab";
 import WasteTab from "./tabs/WasteTab";
+
+import WastePredictorGuide from "./WastePredictorGuide";
 import ApiTab from "./tabs/ApiTab";
+import ApiGuide from "./ApiGuide";
+import WasteUploadGuide from "./WasteUploadGuide";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -26,6 +30,12 @@ const Dashboard = () => {
         return <WasteTab />;
       case "api":
         return <ApiTab />;
+      case "mlguide":
+        return <WastePredictorGuide />;
+      case "apiguide":
+        return <ApiGuide />;
+      case "wasteuploadguide":
+        return <WasteUploadGuide />;
       default:
         return <OverviewTab />;
     }

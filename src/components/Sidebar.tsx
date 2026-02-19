@@ -63,6 +63,33 @@ const Sidebar = ({ activeTab, setActiveTab }: SidebarProps) => {
         </svg>
       ),
     },
+    {
+      id: "mlguide",
+      label: "ML Model Guide",
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+        </svg>
+      ),
+    },
+    {
+      id: "apiguide",
+      label: "API Guide",
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2a4 4 0 014-4h4m0 0V7m0 4l-4-4m4 4l4-4" />
+        </svg>
+      ),
+    },
+    {
+      id: "wasteuploadguide",
+      label: "Waste Upload Guide",
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v16m16-8H4" />
+        </svg>
+      ),
+    },
   ];
 
   return (
@@ -92,20 +119,47 @@ const Sidebar = ({ activeTab, setActiveTab }: SidebarProps) => {
         <p className="px-3 py-2 text-[10px] text-[#8B949E] uppercase tracking-wider font-medium">
           Deployment
         </p>
-        {navItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => setActiveTab(item.id)}
-            className={`w-full flex items-center gap-3 px-3 py-2 rounded text-sm transition-colors ${
-              activeTab === item.id
-                ? "bg-[#00ED64]/10 text-[#00ED64] border-l-2 border-[#00ED64]"
-                : "text-[#8B949E] hover:bg-[#2D3748] hover:text-white"
-            }`}
-          >
-            {item.icon}
-            {item.label}
-          </button>
-        ))}
+        {navItems
+          .filter(item => !["mlguide", "apiguide", "wasteuploadguide"].includes(item.id))
+          .map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded text-sm transition-colors ${
+                activeTab === item.id
+                  ? "bg-[#00ED64]/10 text-[#00ED64] border-l-2 border-[#00ED64]"
+                  : "text-[#8B949E] hover:bg-[#2D3748] hover:text-white"
+              }`}
+            >
+              {item.icon}
+              {item.label}
+            </button>
+          ))}
+
+        {/* Guide Section */}
+        <div className="mt-6">
+          <p className="px-3 py-2 text-[10px] text-[#8B949E] uppercase tracking-wider font-medium">
+            Guide
+          </p>
+          {["mlguide", "apiguide", "wasteuploadguide"].map((id) => {
+            const item = navItems.find(n => n.id === id);
+            if (!item) return null;
+            return (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                className={`w-full flex items-center gap-3 px-3 py-2 rounded text-sm transition-colors ${
+                  activeTab === item.id
+                    ? "bg-[#00ED64]/10 text-[#00ED64] border-l-2 border-[#00ED64]"
+                    : "text-[#8B949E] hover:bg-[#2D3748] hover:text-white"
+                }`}
+              >
+                {item.icon}
+                {item.label}
+              </button>
+            );
+          })}
+        </div>
       </nav>
 
       {/* Footer */}
